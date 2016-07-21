@@ -8,12 +8,12 @@
 #include <linux/gpio.h>
 #include <linux/timer.h>
 
-#define TIMER_ON_PERIOD 500
-#define TIMER_OFF_PERIOD 1000
+#define TIMER_ON_PERIOD 200
+#define TIMER_OFF_PERIOD 1500
 
 static struct timer_list my_timer;
 
-static unsigned int gpioLED = 7;
+static unsigned int gpioLED = 17;
 static bool ledOn = false;
 
 void my_timer_callback(unsigned long data){
@@ -29,7 +29,7 @@ void my_timer_callback(unsigned long data){
     mod_timer(&my_timer, jiffies + msecs_to_jiffies(timer_period));
 }
 
-static int __init blinkled_init(){
+static int __init blinkled_init(void){
     int ret = 0;
 
     printk(KERN_INFO "BLINKLED: INIT Called\n");
@@ -52,7 +52,7 @@ static int __init blinkled_init(){
     return ret;
 }
 
-static void __exit blinkled_exit(){
+static void __exit blinkled_exit(void){
     int ret = 0;
 
     gpio_set_value(gpioLED, 0);

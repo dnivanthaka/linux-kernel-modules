@@ -1,4 +1,4 @@
-obj-m += blinkled.o
+obj-m += intled.o
 
 all:
 		make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
