@@ -1,4 +1,4 @@
-obj-m += intled.o
+obj-m += gpinput.o
 
 all:
 		make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
