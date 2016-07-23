@@ -12,7 +12,7 @@
 #include <linux/input.h>
 
 
-#define DRVNAME "gpiokey"
+#define DRVNAME "gpinput"
 
 static unsigned int gpioButton = 4;
 static unsigned int irqNumber;
@@ -30,7 +30,11 @@ static irq_handler_t gpinput_callback(unsigned int irq, void *dev_id, struct pt_
 
     printk(KERN_INFO "GPINPUT: Button pressed\n");
 
-    input_report_key(idev, BTN_0, 1); //keypress
+    input_report_key(idev, KEY_A, 1); //keypress
+    //input_report_key(idev, BTN_0, 0); //release
+    input_sync(idev);
+
+    input_report_key(idev, KEY_A, 0); //keyrelease
     //input_report_key(idev, BTN_0, 0); //release
     input_sync(idev);
 
@@ -60,9 +64,11 @@ static int __init gpinput_init(void){
     //idev->keycode = BTN_0;
     //idev->keycodesize = 1;
     __set_bit(EV_KEY, idev->evbit);
+    __set_bit(KEY_A, idev->keybit);
     //idev->keybit[BIT_WORD(LED_NUML)] = BIT_MASK(LED_NUML);
-    idev->name = "gpinput";
-    idev->phys = "gpinput/input0";
+    idev->name = DRVNAME;
+    //idev->uniq = "gpinput";
+    idev->phys = DRVNAME"/input0";
     idev->id.bustype = BUS_HOST;
     idev->id.vendor = 0x0001;
     idev->id.product = 0x0001;
